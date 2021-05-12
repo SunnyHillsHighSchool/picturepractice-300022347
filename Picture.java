@@ -367,6 +367,152 @@ public class Picture
   }
 
    ////////////////////// methods ///////////////////////////////////////
+  public void mirrorTopBottom()
+  {
+    //Create 2d array of pixels
+    Pixel[][]pixels = this.getPixels2D();
+    //Create top pixel
+    Pixel top = null;
+    Pixel bottom = null; 
+    //Loop through half of rows using Loop Control Variable: r
+    for(int r=0; r<pixels.length/2;r++)
+    {
+      //Loop through columns using Loop Control Variable: c
+      for(int c=0; c<pixels[0].length;c++)
+      {
+        //Assign Top to (row,column)
+        top=pixels[r][c];
+        //Assign Bottom to (row,column+1-c)
+        bottom = pixels[pixels.length-1-r][c];
+        //Set bottom pixel colors to top pixel colors
+        bottom.setColor(top.getColor());
+      }
+    }
+  }
+
+   public void upsideDownTopBottom()
+  {
+    //Create 2d array of pixels
+    Pixel[][]pixels = this.getPixels2D();
+    //Create top pixel
+    Pixel top = null;
+    //Create bottom pixel
+    Pixel bottom = null;
+    //Create Mirror color point
+    int mirrorR = 0; 
+    int mirrorG = 0; 
+    int mirrorB = 0; 
+    //Loop through half of rows using Loop Control Variable: r
+    for(int r=0; r<pixels.length/2;r++)
+    {
+      //Loop through columns using Loop Control Variable: c
+      for(int c=0; c<pixels[0].length;c++)
+      {
+        //Assign Top to (row,column)
+        top=pixels[r][c];
+        //Assign Bottom to (row,column+1-c)
+        bottom = pixels[pixels.length-1-r][c];
+        //Set bottom to mirror point
+        mirrorR=bottom.getRed();
+        mirrorG=bottom.getGreen();
+        mirrorB=bottom.getBlue();
+        //Set bottom pixel colors to top pixel colors
+        bottom.setColor(top.getColor());
+        //Set top pixel colors to mirror point
+        top.setRed(mirrorR);
+        top.setGreen(mirrorG);
+        top.setBlue(mirrorB);
+      }
+    }
+  }
+
+  public void sepiaConvert()
+  {
+    //Create 2d array of pixels
+    Pixel[][]pixels = this.getPixels2D();
+    //Create pixel
+    Pixel current = null;
+    //Create current color point
+    double cR = 0; 
+    double cG = 0; 
+    double cB = 0; 
+    //Loop through rows
+    for(int r=0; r<pixels.length;r++)
+    {
+      //Loop through columns 
+      for(int c=0; c<pixels[0].length;c++)
+      {
+        //Assign Top to (row,column)
+        current=pixels[r][c];
+        //Set bottom to mirror point
+        cR=current.getRed();
+        cG=current.getGreen();
+        cB=current.getBlue();
+
+        if(cR==0&&cG==0&&cB==0)
+        {
+          cR++;
+          cG++;
+          cB++;
+        }
+        else;
+        //Set current pixel colors to sepia
+        int newRed = (int)(0.393*cR + 0.769*cG + 0.189*cB);
+        int newGreen = (int)(0.349*cR + 0.686*cG + 0.168*cG);
+        int newBlue = (int)(0.272*cR + 0.534*cG + 0.131*cB);
+        current.setRed(newRed);
+        current.setGreen(newGreen);
+        current.setBlue(newBlue);
+        if(current.getRed()>255)
+        {
+          current.setRed(255);
+        }
+        if(current.getGreen()>255)
+        {
+          current.setGreen(255);
+        }
+        if(current.getBlue()>255)
+        {
+          current.setBlue(255);
+        }
+      }
+    }
+  }
+
+  public void setImage(String image, int xStart, int yStart)
+  {
+
+    Picture set = new Picture(image);
+    Pixel[][] setData = set.getPixels2D();
+
+    Pixel current=null;
+    Pixel color = null;
+    Pixel[][] setColors = this.getPixels2D();
+
+
+    for(int r=xStart; r<setData.length+xStart;r++)
+    {
+      for(int c=yStart; c<setData[0].length+yStart;c++)
+      {
+        current = setColors[r][c];
+        color = setData[r-xStart][c-yStart];
+        current.setColor(color.getColor());
+      }
+    }
+  }
+
+
+
+  public void collage(String background, String initOne, String initTwo)
+    {
+      Picture backG = new Picture(background);
+      this.setImage(background,0,0);
+      this.mirrorTopBottom();
+      this.setImage(initOne,40,40);
+      this.upsideDownTopBottom();
+      this.setImage(initTwo,200,200);
+      this.sepiaConvert();
+    }
 
    
 

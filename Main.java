@@ -1,13 +1,14 @@
-class Main 
+class Main
 {
-  /* Main method for testing */
-  public static void main(String[] args) 
-  {
-    Picture pic = new Picture("beach.jpg");
-     pic.decreaseBlue(.60);
-    pic.write("output.jpg");
-  }
+ /* Main method for testing */
+ public static void main(String[] args)
+ {
+    Picture canvas = new Picture(612,612);
+    canvas.collage("watermelon.jpg","apple.png","banan.jpg");
+    canvas.write("output.jpg");
+ }
 }
+
 
 /*
   This is Picture Lab with all of the GUI stripped out.
